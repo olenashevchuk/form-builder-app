@@ -16,6 +16,7 @@ export async function POST(request: Request) {
     }
 
     await connectToDatabase();
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -29,11 +30,13 @@ export async function POST(request: Request) {
     await user.save();
 
     const token = generateToken(user);
+
     return NextResponse.json(
       { token, user: { id: user._id, email, name } },
       { status: 201 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

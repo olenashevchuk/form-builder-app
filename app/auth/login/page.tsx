@@ -19,6 +19,7 @@ export default function LoginPage() {
       throw new Error(error.error || "Failed to log in");
     }
     const { token } = await response.json();
+
     localStorage.setItem("token", token);
     router.push("/forms");
   };

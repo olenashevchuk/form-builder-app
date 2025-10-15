@@ -12,20 +12,25 @@ export default function SignUpPage() {
     password: string;
     name?: string;
   }) => {
-    const response = await fetch("/api/auth/sign-up", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch("/api/auth/sign-up", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Failed to sign up");
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to sign up");
+      }
+
+      localStorage.setItem("token", result.token);
+      router.push("/forms");
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message);
     }
-
-    const { token } = await response.json();
-    localStorage.setItem("token", token);
-    router.push("/forms");
   };
 
   return (
