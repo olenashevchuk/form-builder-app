@@ -19,7 +19,6 @@ export function middleware(request: NextRequest) {
 
   const valid = isTokenValid(token);
 
-  // Перевірка захищених шляхів (/forms/create та /forms/edit/*)
   if (
     protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
   ) {
@@ -29,7 +28,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Перевірка сторінок авторизації
   if (authPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
     if (valid) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -37,7 +35,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Дозволяємо доступ до всіх інших сторінок, включаючи /
   return NextResponse.next();
 }
 

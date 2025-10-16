@@ -17,6 +17,9 @@ export default function FormsPage() {
     const fetchForms = async () => {
       try {
         const response = await fetch("/api/forms");
+        if (!response.ok) {
+          throw new Error("Failed to fetch forms");
+        }
         const data = await response.json();
         setForms(data);
       } catch (error) {
@@ -29,14 +32,15 @@ export default function FormsPage() {
     fetchForms();
   }, []);
 
+  const handleFormClick = (id: string) => {
+    router.push(`/forms/edit/${id}`);
+  };
+
   return (
     <div className="min-h-screen p-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Forms</h1>
-        <button
-          onClick={() => router.push("/forms/create")}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
+        <h2>Forms</h2>
+        <button onClick={() => router.push("/forms/create")}>
           Create Form
         </button>
       </div>
@@ -45,13 +49,14 @@ export default function FormsPage() {
       ) : forms.length === 0 ? (
         <p>No published forms available.</p>
       ) : (
-        <div className="grid gap-4">
+        <div className="flex flex-row gap-4 overflow-x-auto">
           {forms.map((form) => (
             <div
               key={form.id}
-              className="p-4 border rounded shadow-sm hover:shadow-md"
+              className="p-4 border rounded shadow-sm hover:shadow-md cursor-pointer min-w-[200px]"
+              onClick={() => handleFormClick(form.id)}
             >
-              <h2 className="text-lg font-semibold">{form.title}</h2>
+              <h2 className="mb-0">{form.title}</h2>
             </div>
           ))}
         </div>

@@ -1,29 +1,16 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { Field } from "types";
 
-interface IField {
-  type: "text" | "number" | "textarea";
-  label: string;
-  placeholder?: string;
-  required: boolean;
-  minLength?: number;
-  maxLength?: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  rows?: number;
-  order: number;
-}
-
-interface IForm extends Document {
+interface Form extends Document {
   title: string;
   userId: mongoose.Types.ObjectId;
-  fields: IField[];
+  fields: Field[];
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const fieldSchema = new Schema<IField>({
+const fieldSchema = new Schema<Field>({
   type: {
     type: String,
     enum: ["text", "number", "textarea"],
@@ -73,7 +60,7 @@ const fieldSchema = new Schema<IField>({
   },
 });
 
-const formSchema = new Schema<IForm>(
+const formSchema = new Schema<Form>(
   {
     title: {
       type: String,
@@ -95,5 +82,4 @@ const formSchema = new Schema<IForm>(
   { timestamps: true }
 );
 
-export default mongoose.models.Form ||
-  mongoose.model<IForm>("Form", formSchema);
+export default mongoose.models.Form || mongoose.model<Form>("Form", formSchema);
