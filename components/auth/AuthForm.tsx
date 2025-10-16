@@ -8,7 +8,7 @@ interface AuthFormInputs {
 }
 
 interface AuthFormProps {
-  type: "login" | "sign-up";
+  type: "login";
   onSubmit: (data: AuthFormInputs) => Promise<void>;
 }
 
@@ -21,16 +21,6 @@ interface FieldConfig {
 }
 
 const formFieldsConfig: FieldConfig[] = [
-  {
-    name: "name",
-    label: "Name",
-    type: "text",
-    showWhen: (type) => type === "sign-up",
-    validation: {
-      required: "Name is required",
-      minLength: { value: 2, message: "Name must be at least 2 characters" },
-    },
-  },
   {
     name: "email",
     label: "Email",
@@ -101,7 +91,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button type="submit" className="w-full mt-4">
-        {type === "login" ? "Log In" : "Sign Up"}
+        Log In
       </button>
     </form>
   );

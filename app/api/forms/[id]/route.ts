@@ -6,13 +6,13 @@ import { JwtPayload } from "types";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> } // ✅ Змінено на Promise
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params; // ✅ Потрібно await
+    const { id } = await params;
     await connectToDatabase();
 
-    const form = await Form.findById(id); // ✅ Використовуємо await-ну id
+    const form = await Form.findById(id);
 
     if (!form) {
       return NextResponse.json({ error: "Form not found" }, { status: 404 });
@@ -38,10 +38,10 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> } // ✅ Змінено на Promise
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params; // ✅ Потрібно await
+    const { id } = await params;
 
     const token = request.headers.get("cookie")?.match(/token=([^;]+)/)?.[1];
     if (!token) {
@@ -80,7 +80,7 @@ export async function PUT(
 
     await connectToDatabase();
 
-    const form = await Form.findOne({ _id: id, userId }); // ✅ Використовуємо await-ну id
+    const form = await Form.findOne({ _id: id });
 
     if (!form) {
       return NextResponse.json(

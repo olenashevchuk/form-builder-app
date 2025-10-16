@@ -37,6 +37,7 @@ export default function FormBuilder({
     setFields([
       ...fields,
       {
+        _id: Date.now().toString(),
         type,
         label: "",
         placeholder: "",
@@ -223,7 +224,7 @@ export default function FormBuilder({
             ) : (
               fields.map((field, index) => (
                 <SortableField
-                  key={index}
+                  key={field._id}
                   field={field}
                   index={index}
                   setSelectedFieldIndex={setSelectedFieldIndex}
@@ -242,13 +243,10 @@ export default function FormBuilder({
       >
         <form className="space-y-4">
           {fields.map((field, index) => {
-            const fieldId = `preview-field-${index}`;
+            const fieldId = `preview-field-${field._id}`;
             return (
-              <div key={index}>
-                <label
-                  htmlFor={fieldId}
-                  className="block text-sm font-medium text-gray-700"
-                >
+              <div key={field._id}>
+                <label htmlFor={fieldId}>
                   {field.label || "Unnamed Field"}{" "}
                   {field.required && <span className="text-red-500">*</span>}
                 </label>

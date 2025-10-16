@@ -28,8 +28,8 @@ export default function LoginPage() {
     <>
       <AuthForm type="login" onSubmit={handleSubmit} />
       <div className="text-center">
-        <p className="text-sm text-gray-600">Don&apos;t have an account?</p>
-        <Link href="/auth/sign-up">Sign up</Link>
+        <p className="text-sm text-gray-600">or</p>
+        <Link href="/">To forms</Link>
       </div>
     </>
   );
