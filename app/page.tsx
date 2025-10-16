@@ -98,12 +98,14 @@ export default function FormsPage() {
               className="p-4 border rounded shadow-sm hover:shadow-md cursor-pointer flex gap-4 justify-between min-h-[100px]"
             >
               <h3 className="line-clamp-3">{form.title}</h3>
-              <div className="flex justify-end">
-                <PencilSquareIcon
-                  className="h-5 w-5 text-gray-500 hover:text-gray-700"
-                  onClick={(e) => handleFormEditClick(e, form.id)}
-                />
-              </div>
+              {isTokenValid && (
+                <div className="flex justify-end">
+                  <PencilSquareIcon
+                    className="h-5 w-5 text-gray-500 hover:text-gray-700"
+                    onClick={(e) => handleFormEditClick(e, form.id)}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>
