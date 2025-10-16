@@ -18,7 +18,7 @@ export default function ViewFormPage() {
   const params = useParams();
   const [formData, setFormData] = useState<FormData | null>(null);
   const [submittedFields, setSubmittedFields] = useState<
-    { label: string; value: any }[]
+    { label: string; value: string | number }[]
   >([]);
   const [message, setMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,7 +41,7 @@ export default function ViewFormPage() {
     fetchForm();
   }, [params.id]);
 
-  const handleChange = (index: number, value: any) => {
+  const handleChange = (index: number, value: string | number) => {
     const updated = [...submittedFields];
     updated[index].value = value;
     setSubmittedFields(updated);
