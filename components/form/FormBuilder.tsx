@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
@@ -136,7 +134,7 @@ export default function FormBuilder({
   };
 
   return (
-    <div className="min-h-screen p-6 flex gap-8 relative">
+    <div className="flex gap-8 relative">
       <div className="w-1/2 max-w-lg">
         <h3 className="text-2xl font-bold mb-6">
           {isEditMode ? "Edit Form" : "Create New Form"}

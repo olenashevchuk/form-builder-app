@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
 import FormBuilder from "@/components/form/FormBuilder";
 import { Field } from "types";
+import Link from "next/link";
 
 interface FormData {
   id: string;
@@ -49,10 +50,18 @@ export default function EditFormPage() {
   if (!form) return notFound();
 
   return (
-    <FormBuilder
-      formId={form.id}
-      initialTitle={form.title}
-      initialFields={form.fields}
-    />
+    <div className="min-h-screen p-6 ">
+      <Link
+        href="/"
+        className="inline-block mb-4 text-blue-600 hover:underline"
+      >
+        ← Back to Home
+      </Link>
+      <FormBuilder
+        formId={form.id}
+        initialTitle={form.title}
+        initialFields={form.fields}
+      />
+    </div>
   );
 }
