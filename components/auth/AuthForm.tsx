@@ -54,8 +54,10 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
     formState: { errors },
   } = useForm<AuthFormInputs>();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const onFormSubmit: SubmitHandler<AuthFormInputs> = async (data) => {
+    setLoading(true);
     try {
       setError(null);
       await onSubmit(data);
@@ -65,6 +67,8 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
       } else {
         setError("Something went wrong");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,7 +94,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <button type="submit" className="w-full mt-4">
+      <button type="submit" className="w-full mt-4" disabled={loading}>
         Log In
       </button>
     </form>

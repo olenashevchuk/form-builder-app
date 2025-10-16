@@ -46,7 +46,12 @@ export default function EditFormPage() {
     fetchForm();
   }, [params.id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="min-h-screen p-6 ">
+        <p>Loading...</p>
+      </div>
+    );
   if (!form) return notFound();
 
   return (

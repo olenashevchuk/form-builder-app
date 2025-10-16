@@ -12,6 +12,7 @@ interface Form {
 export default function FormsPage() {
   const [forms, setForms] = useState<Form[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -51,10 +52,11 @@ export default function FormsPage() {
   return (
     <div className="min-h-screen p-4">
       <div className="flex gap-4 items-center mb-6">
-        <h2>Forms</h2>
-        <button className="ml-auto outlined" onClick={logout}>
+        <h2 className="mr-auto ">Forms</h2>
+        <button className=" outlined" onClick={logout}>
           Logout
         </button>
+
         <button onClick={() => router.push("/forms/create")}>
           Create Form
         </button>

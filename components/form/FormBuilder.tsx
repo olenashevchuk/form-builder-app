@@ -37,7 +37,6 @@ export default function FormBuilder({
     setFields([
       ...fields,
       {
-        _id: Date.now().toString(),
         type,
         label: "",
         placeholder: "",
@@ -138,6 +137,29 @@ export default function FormBuilder({
     }
   };
 
+  const removeForm = async () => {
+    try {
+      const response = await fetch(`/api/forms/${formId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error || `Failed to delete form`);
+      }
+
+      router.push("/");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="flex gap-8 relative">
       <div className="w-1/2 max-w-lg">
@@ -188,6 +210,13 @@ export default function FormBuilder({
           <div className="flex flex-col gap-2">
             <button
               type="button"
+              onClick={removeForm}
+              className="outlined danger"
+            >
+              Remove Form
+            </button>
+            <button
+              type="button"
               className="outlined"
               onClick={() => setIsPreviewOpen(true)}
               disabled={fields.length === 0}
@@ -222,15 +251,19 @@ export default function FormBuilder({
             {fields.length === 0 ? (
               <p>No fields added yet.</p>
             ) : (
-              fields.map((field, index) => (
-                <SortableField
-                  key={field._id}
-                  field={field}
-                  index={index}
-                  setSelectedFieldIndex={setSelectedFieldIndex}
-                  selectedFieldIndex={selectedFieldIndex}
-                />
-              ))
+              fields.map((field, index) => {
+                const fieldId = `sortable-field-${index}`;
+
+                return (
+                  <SortableField
+                    key={fieldId}
+                    field={field}
+                    index={index}
+                    setSelectedFieldIndex={setSelectedFieldIndex}
+                    selectedFieldIndex={selectedFieldIndex}
+                  />
+                );
+              })
             )}
           </SortableContext>
         </DndContext>
@@ -258,7 +291,6 @@ export default function FormBuilder({
                     required={field.required}
                     minLength={field.minLength}
                     maxLength={field.maxLength}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                   />
                 ) : field.type === "number" ? (
                   <input
@@ -269,7 +301,6 @@ export default function FormBuilder({
                     max={field.max}
                     step={field.step}
                     required={field.required}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                   />
                 ) : (
                   <textarea
@@ -279,19 +310,13 @@ export default function FormBuilder({
                     required={field.required}
                     minLength={field.minLength}
                     maxLength={field.maxLength}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                   />
                 )}
               </div>
             );
           })}
           <div className="flex justify-end mt-4">
-            <button
-              type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Submit
-            </button>
+            <button type="button">Submit</button>
           </div>
         </form>
       </Modal>

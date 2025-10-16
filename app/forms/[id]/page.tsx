@@ -75,7 +75,11 @@ export default function ViewFormPage() {
   };
 
   if (!formData) {
-    return <p>Loading...</p>;
+    return (
+      <div className="min-h-screen p-6">
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   const sortedFields = [...formData.fields].sort(

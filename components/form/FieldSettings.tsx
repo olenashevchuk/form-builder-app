@@ -1,3 +1,5 @@
+"use client";
+
 import { Field } from "types";
 
 const FieldSettings = ({
@@ -16,21 +18,38 @@ const FieldSettings = ({
   fieldType: string;
 }) => {
   if (!isOpen) return null;
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (field.required && !field.label?.trim()) {
+      alert("Label is required");
+      return;
+    }
+    onClose();
+  };
+
   return (
     <>
       <div
         className="fixed inset-0 bg-black opacity-50 z-10"
         onClick={onClose}
       />
-      <div className="fixed right-0 top-0 h-full w-100 bg-white shadow-lg p-4 overflow-y-auto z-20 transform transition-transform duration-300 ease-in-out translate-x-0">
+      <form
+        onSubmit={handleSubmit}
+        className="fixed right-0 top-0 h-full w-100 bg-white shadow-lg p-4 overflow-y-auto z-20 transform transition-transform duration-300 ease-in-out translate-x-0"
+      >
         <div className="flex justify-between items-center mb-4">
           <h3>{fieldType} Field Settings</h3>
-          <button onClick={onClose} className="outlined">
+          <button type="button" onClick={onClose} className="outlined">
             Close
           </button>
         </div>
+
         <div className="mb-2">
-          <label htmlFor="field-label">Label</label>
+          <label htmlFor="field-label">
+            Label
+            <span className="text-red-500">*</span>
+          </label>
           <input
             id="field-label"
             type="text"
@@ -40,6 +59,7 @@ const FieldSettings = ({
             required
           />
         </div>
+
         <div className="mb-2">
           <label htmlFor="field-placeholder">Placeholder</label>
           <input
@@ -50,6 +70,7 @@ const FieldSettings = ({
             placeholder="Enter placeholder"
           />
         </div>
+
         <div className="mb-2">
           <label className="flex items-center">
             <input
@@ -61,6 +82,7 @@ const FieldSettings = ({
             Required
           </label>
         </div>
+
         {(field.type === "text" || field.type === "textarea") && (
           <>
             <div className="mb-2">
@@ -91,6 +113,7 @@ const FieldSettings = ({
             </div>
           </>
         )}
+
         {field.type === "number" && (
           <>
             <div className="mb-2">
@@ -128,6 +151,7 @@ const FieldSettings = ({
             </div>
           </>
         )}
+
         {field.type === "textarea" && (
           <div className="mb-2">
             <label htmlFor="field-rows">Rows</label>
@@ -142,14 +166,19 @@ const FieldSettings = ({
             />
           </div>
         )}
+
         <button
           type="button"
           onClick={removeField}
-          className="danger outlined mt-4"
+          className="danger outlined "
         >
           Remove Field
         </button>
-      </div>
+
+        <button type="submit" className="primary">
+          Save
+        </button>
+      </form>
     </>
   );
 };

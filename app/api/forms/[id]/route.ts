@@ -105,3 +105,62 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    const token = request.headers.get("cookie")?.match(/token=([^;]+)/)?.[1];
+    if (!token) {
+      return NextResponse.json(
+        { error: "Unauthorized: No token provided" },
+        { status: 401 }
+      );
+    }
+
+    let userId;
+    try {
+      const payload = verify(token, process.env.JWT_SECRET!);
+      userId = (payload as JwtPayload).userId;
+    } catch {
+      return NextResponse.json(
+        { error: "Unauthorized: Invalid token" },
+        { status: 401 }
+      );
+    }
+
+    await connectToDatabase();
+
+    const form = await Form.findOne({ _id: id });
+
+    if (!form) {
+      return NextResponse.json(
+        { error: "Form not found or you don't have permission" },
+        { status: 404 }
+      );
+    }
+
+    if (form.userId.toString() !== userId) {
+      return NextResponse.json(
+        { error: "You don't have permission to delete this form" },
+        { status: 403 }
+      );
+    }
+
+    await form.deleteOne();
+
+    return NextResponse.json(
+      { message: "Form deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting form:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

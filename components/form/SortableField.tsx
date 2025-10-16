@@ -38,7 +38,7 @@ const SortableField = ({
       onClick={handleClick}
     >
       <div className="flex items-center">
-        <div {...listeners} {...attributes} className="mr-2 cursor-move">
+        <div {...listeners} {...attributes} className="mr-2 cursor-move w-4">
           <Bars3Icon />
         </div>
         <div className="flex-1">
@@ -55,7 +55,6 @@ const SortableField = ({
               type="text"
               placeholder={field.placeholder}
               disabled
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           ) : field.type === "number" ? (
             <input
@@ -66,7 +65,6 @@ const SortableField = ({
               max={field.max}
               step={field.step}
               disabled
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           ) : (
             <textarea
@@ -74,7 +72,6 @@ const SortableField = ({
               placeholder={field.placeholder}
               rows={field.rows}
               disabled
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           )}
         </div>
