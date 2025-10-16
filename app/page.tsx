@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 interface Form {
   id: string;
@@ -32,14 +33,28 @@ export default function FormsPage() {
     fetchForms();
   }, []);
 
-  const handleFormClick = (id: string) => {
+  const handleFormEditClick = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
     router.push(`/forms/edit/${id}`);
+  };
+
+  const handleFormViewClick = (id: string) => {
+    router.push(`/forms/${id}`);
+  };
+
+  const logout = async () => {
+    localStorage.removeItem("token");
+    await fetch("/api/auth/logout");
+    router.push("/");
   };
 
   return (
     <div className="min-h-screen p-4">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex gap-4 items-center mb-6">
         <h2>Forms</h2>
+        <button className="ml-auto outlined" onClick={logout}>
+          Logout
+        </button>
         <button onClick={() => router.push("/forms/create")}>
           Create Form
         </button>
@@ -49,14 +64,20 @@ export default function FormsPage() {
       ) : forms.length === 0 ? (
         <p>No published forms available.</p>
       ) : (
-        <div className="flex flex-row gap-4 overflow-x-auto">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">
           {forms.map((form) => (
             <div
+              onClick={() => handleFormViewClick(form.id)}
               key={form.id}
-              className="p-4 border rounded shadow-sm hover:shadow-md cursor-pointer min-w-[200px]"
-              onClick={() => handleFormClick(form.id)}
+              className="p-4 border rounded shadow-sm hover:shadow-md cursor-pointer flex gap-4 justify-between min-h-[100px]"
             >
-              <h2 className="mb-0">{form.title}</h2>
+              <h3 className="line-clamp-3">{form.title}</h3>
+              <div className="flex justify-end">
+                <PencilSquareIcon
+                  className="h-5 w-5 text-gray-500 hover:text-gray-700"
+                  onClick={(e) => handleFormEditClick(e, form.id)}
+                />
+              </div>
             </div>
           ))}
         </div>

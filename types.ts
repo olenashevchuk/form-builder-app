@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
 
 export interface Field {
+  _id: string;
   type: "text" | "number" | "textarea";
   label: string;
   placeholder?: string;

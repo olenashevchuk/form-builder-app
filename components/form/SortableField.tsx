@@ -39,7 +39,7 @@ const SortableField = ({
     >
       <div className="flex items-center">
         <div {...listeners} {...attributes} className="mr-2 cursor-move">
-          <Bars3Icon className="h-5 w-5 text-gray-500" />
+          <Bars3Icon />
         </div>
         <div className="flex-1">
           <label
