@@ -61,6 +61,14 @@ export default function FormsPage() {
     setIsTokenValid(false);
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen p-6">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen p-4">
       <div className="flex gap-4 items-center mb-6">
@@ -70,13 +78,16 @@ export default function FormsPage() {
             Logout
           </button>
         )}
-        <button onClick={() => router.push("/forms/create")}>
-          Create Form
-        </button>
+        {isTokenValid && (
+          <button onClick={() => router.push("/forms/create")}>
+            Create Form
+          </button>
+        )}
+        {!isTokenValid && (
+          <button onClick={() => router.push("/auth/login")}>Login</button>
+        )}
       </div>
-      {isLoading ? (
-        <p>Loading forms...</p>
-      ) : forms.length === 0 ? (
+      {forms.length === 0 ? (
         <p>No published forms available.</p>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4">

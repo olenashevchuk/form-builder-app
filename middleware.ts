@@ -1,4 +1,3 @@
-import { verify } from "crypto";
 import { NextResponse, NextRequest } from "next/server";
 import checkIsTokenValid from "helpers/checkIsTokenValid";
 
