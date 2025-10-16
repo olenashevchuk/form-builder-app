@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { verify } from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 import Form from "@/models/Form";
+import { JwtPayload } from "types";
 
 export async function GET(
   request: Request,
@@ -39,7 +40,6 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Отримуємо токен із cookies
     const token = request.headers.get("cookie")?.match(/token=([^;]+)/)?.[1];
     if (!token) {
       return NextResponse.json(
@@ -48,11 +48,10 @@ export async function PUT(
       );
     }
 
-    // Перевіряємо валідність токена
     let userId;
     try {
       const payload = verify(token, process.env.JWT_SECRET!);
-      userId = (payload as any).userId;
+      userId = (payload as JwtPayload).userId;
     } catch {
       return NextResponse.json(
         { error: "Unauthorized: Invalid token" },

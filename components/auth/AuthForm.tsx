@@ -69,8 +69,12 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
     try {
       setError(null);
       await onSubmit(data);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   };
 

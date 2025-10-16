@@ -27,9 +27,12 @@ export default function SignUpPage() {
 
       localStorage.setItem("token", result.token);
       router.push("/");
-    } catch (err: any) {
-      console.error(err);
-      alert(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("Something went wrong");
+      }
     }
   };
 
