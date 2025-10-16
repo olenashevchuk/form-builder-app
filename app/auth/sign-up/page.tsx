@@ -26,7 +26,7 @@ export default function SignUpPage() {
       }
 
       localStorage.setItem("token", result.token);
-      router.push("/forms");
+      router.push("/");
     } catch (err: any) {
       console.error(err);
       alert(err.message);

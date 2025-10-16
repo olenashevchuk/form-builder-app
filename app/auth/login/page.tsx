@@ -21,7 +21,7 @@ export default function LoginPage() {
     const { token } = await response.json();
 
     localStorage.setItem("token", token);
-    router.push("/forms");
+    router.push("/");
   };
 
   return (
