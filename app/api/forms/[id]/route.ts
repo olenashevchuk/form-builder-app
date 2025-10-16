@@ -94,7 +94,7 @@ export async function PUT(
       ...field,
       label: field.label?.trim() ? field.label : "Unnamed field",
     }));
-    console.log(form.fields);
+
     await form.save();
 
     return NextResponse.json(
