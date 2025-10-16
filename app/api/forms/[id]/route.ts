@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { verify } from "jsonwebtoken";
 import { connectToDatabase } from "@/lib/db";
 import Form from "@/models/Form";
-import { JwtPayload } from "types";
+import { Field, JwtPayload } from "types";
 
 export async function GET(
   request: Request,
@@ -90,7 +90,11 @@ export async function PUT(
     }
 
     form.title = title;
-    form.fields = fields;
+    form.fields = fields?.map((field: Field) => ({
+      ...field,
+      label: field.label?.trim() ? field.label : "Unnamed field",
+    }));
+
     await form.save();
 
     return NextResponse.json(

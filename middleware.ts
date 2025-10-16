@@ -29,6 +29,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/forms/create/:path*", "/forms/edit/:path*", "/auth/login"],
+  matcher: ["/forms/create", "/forms/edit/:path*", "/auth/login"],
   runtime: "nodejs",
 };
