@@ -149,7 +149,10 @@ export async function DELETE(
 
     if (form.userId.toString() !== userId) {
       return NextResponse.json(
-        { error: "You don't have permission to delete this form" },
+        {
+          error:
+            "You don't have permission to delete this form, this form is created by other user",
+        },
         { status: 403 }
       );
     }
