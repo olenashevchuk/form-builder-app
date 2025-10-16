@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { jwtDecode } from "jwt-decode";
 
 interface Form {
   id: string;
@@ -12,16 +13,27 @@ interface Form {
 export default function FormsPage() {
   const [forms, setForms] = useState<Form[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        jwtDecode(token);
+        setIsTokenValid(true);
+      } catch {
+        setIsTokenValid(false);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchForms = async () => {
       try {
         const response = await fetch("/api/forms");
-        if (!response.ok) {
-          throw new Error("Failed to fetch forms");
-        }
+        if (!response.ok) throw new Error("Failed to fetch forms");
         const data = await response.json();
         setForms(data);
       } catch (error) {
@@ -30,7 +42,6 @@ export default function FormsPage() {
         setIsLoading(false);
       }
     };
-
     fetchForms();
   }, []);
 
@@ -47,16 +58,18 @@ export default function FormsPage() {
     localStorage.removeItem("token");
     await fetch("/api/auth/logout");
     router.push("/");
+    setIsTokenValid(false);
   };
 
   return (
     <div className="min-h-screen p-4">
       <div className="flex gap-4 items-center mb-6">
-        <h2 className="mr-auto ">Forms</h2>
-        <button className=" outlined" onClick={logout}>
-          Logout
-        </button>
-
+        <h2 className="mr-auto">Forms</h2>
+        {isTokenValid && (
+          <button className="outlined" onClick={logout}>
+            Logout
+          </button>
+        )}
         <button onClick={() => router.push("/forms/create")}>
           Create Form
         </button>
